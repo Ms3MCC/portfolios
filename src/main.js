@@ -12,6 +12,8 @@ import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
 
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import { DRACOLoader } from 'three/addons/loaders/DRACOLoader.js';
+import { FontLoader } from 'three/addons/loaders/FontLoader.js';
+import { TextGeometry } from 'three/addons/geometries/TextGeometry.js';
 
 
 
@@ -57,7 +59,7 @@ group.add(box);
 // sphere
 
 const sphereG = new THREE.SphereGeometry(2, 16, 16);
-const sphereM = new THREE.MeshBasicMaterial({ color: 0xff0000 });
+const sphereM = new THREE.MeshBasicMaterial({ color: 0xff0000,flatShading: true });
 const sphere = new THREE.Mesh(sphereG, sphereM);
 sphere.position.x=-7
 sphere.position.y=0
@@ -188,15 +190,43 @@ const parametricFunction = (u, v, target) => {
   target.set(x, y, z);
 };
 
-// Create Parametric Geometry
+
 const parametricG = new ParametricGeometry(parametricFunction, 50, 50);
 const parametricM = new THREE.MeshBasicMaterial({ color: 0xff5500, wireframe: true });
 const parametric = new THREE.Mesh(parametricG, parametricM);
 
-// Add to scene
+
 parametric.position.x=-7
 parametric.position.y = 8;
 scene.add(parametric);
+
+// text
+
+const loader = new FontLoader();
+loader.load('https://threejs.org/examples/fonts/helvetiker_regular.typeface.json', function (font) {
+  // Create the text geometry
+  const textG = new TextGeometry('Manan Sharma M$3', {
+    font: font,
+    size: 1,           // Height of the text
+    height: 0.5,       // Depth of the text
+    curveSegments: 12, // Number of segments for curves
+    bevelEnabled: true,
+    bevelThickness: 0.05,
+    bevelSize: 0.02,
+    bevelSegments: 5
+  });
+
+  // Create a material
+  const textM = new THREE.MeshBasicMaterial({ color: 0x00ffcc });
+
+  // Mesh for the text
+  const textMesh = new THREE.Mesh(textG, textM);
+  textMesh.position.y = -15;
+  textMesh.position.x = -5;
+
+  // Add the text mesh to the scene
+  scene.add(textMesh);
+});
 
 
 
